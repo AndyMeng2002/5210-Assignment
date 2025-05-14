@@ -83,7 +83,7 @@ mean(high - low) / std(high - low)
 
 ---
 
-📉 因子间相关性分析
+##📉 因子间相关性分析
 为检验三个因子是否表达了不同的市场信息，计算了它们在所有（股票，交易日）样本上的整体 Pearson 相关系数矩阵。结果如下：
 
 |                   | micro\_volatility | rise\_power | vwap\_high |
