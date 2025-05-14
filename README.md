@@ -112,19 +112,19 @@ mean(high - low) / std(high - low)
 
 ### 因子一：盘中价差稳定性因子（Sharpe = 1.805）
 
-![factor1_return](factor1-output.png)
+![factor1_return](./images/factor1-output.png)
 
 ---
 
 ### 因子二：集合竞价 VWAP 失衡因子（Sharpe = 1.245）
 
-![factor2_return](factor2-output.png)
+![factor2_return](./images/factor2-output.png)
 
 ---
 
 ### 因子三：VWAP 扩张指数因子（Sharpe = 1.865）
 
-![factor3_return](factor3-output.png)
+![factor3_return](./images/factor3-output.png)
 
 ---
 
