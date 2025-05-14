@@ -79,7 +79,7 @@ mean(high - low) / std(high - low)
 - 信号时点：每日收盘前生成
 - 交易逻辑：收盘买入，次日开盘卖出
 - 预测目标：隔夜收益率（close-to-open）
-- 实测夏普比率：**2.798**
+- 实测夏普比率：**1.865**
 
 ---
 
@@ -112,7 +112,7 @@ mean(high - low) / std(high - low)
 
 ---
 
-### 因子三：VWAP 扩张指数因子（Sharpe = 2.798）
+### 因子三：VWAP 扩张指数因子（Sharpe = 1.865）
 
 ![factor3_return](factor3-output.png)
 
@@ -123,6 +123,7 @@ mean(high - low) / std(high - low)
 - `factor1.ipynb`：因子一实现代码（Spread Volatility Ratio）
 - `factor2.ipynb`：因子二实现代码（Auction VWAP Imbalance）
 - `factor3.ipynb`：因子三实现代码（VWAP Expansion via Power）
+- `helpers.py`：可能会用到的工具函数
 - `images/`：包含三张因子收益率曲线图片
 - `README.md`：因子逻辑、使用方式与性能总结说明文档
 
