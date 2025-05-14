@@ -1,93 +1,109 @@
-📈 Quantitative Factor Research: Three Intraday Alpha Signals
-This repository contains three alpha factors constructed from minute-level and auction-phase data in the Chinese A-share market. Each factor targets a specific holding period and is designed to capture short-term alpha from intraday market microstructure.
+📈 高频阿尔法因子研究：三个分钟/集合竞价信号
+本项目包含三个基于中国 A 股市场的分钟级与集合竞价时段数据构造的阿尔法因子。每个因子对应不同的信号生成时点与持仓周期，旨在挖掘短周期内的价格行为特征与交易结构性机会。
 
-🔍 Factor 1: Intraday Spread Volatility Ratio
-Formula:
+🔍 因子一：盘中价差稳定性因子（Spread Volatility Ratio）
+计算公式：
 
-Mean(high - low) / Std(high - low) on minute-level bars per stock per day
-
-Intuition:
-
-This factor measures the stability of intraday price ranges. A high ratio indicates consistent but wide price movement, possibly reflecting hidden liquidity or passive accumulation.
-
-Usage & Backtest Logic:
-
-Data Used: Minute-level data during trading hours
-
-Signal Time: Calculated by market close each day
-
-Trade Logic: Buy at close, sell at next open
-
-Target: Predicts overnight return (close-to-open)
-
-Sharpe Ratio: 1.805
-
-⚖️ Factor 2: Pre-market VWAP Imbalance Indicator
-Formula:
-
-(VWAP of executed buy orders − Match Price)
+均值
+(
+high
+−
+low
+)
 ÷
-(Match Price − VWAP of executed sell orders)
+标准差
+(
+high
+−
+low
+)
+均值(high−low)÷标准差(high−low)
+即：分钟级 high-low 的均值与标准差之比。
 
-Explanation:
+设计逻辑：
 
-This factor captures imbalance in trading pressure during the call auction phase (typically 9:15–9:25). A higher value reflects more aggressive buyer participation.
+衡量股票在日内的价差波动是否稳定。若价差大但波动小，可能暗示流动性隐含或稳步建仓行为。
 
-Usage & Backtest Logic:
+使用方式：
 
-Data Used: Order book and matched trade data during auction
+数据来源： 当日的分钟级 K 线（High / Low）
 
-Signal Time: Available before market open
+信号时点： 每日收盘前生成
 
-Trade Logic: Buy at open, sell at next open
+交易逻辑： 收盘买入，次日开盘卖出
 
-Target: Predicts open-to-open return
+预测目标： 隔夜收益率（close-to-open）
 
-Note: Performance remains significant even when buying at the first minute post-open (to account for slippage)
+实测夏普比率： 1.805
 
-Sharpe Ratio: 1.245
+⚖️ 因子二：集合竞价 VWAP 失衡因子（Pre-market VWAP Imbalance）
+计算公式：
 
-🧪 Factor 3: VWAP Expansion Factor (Exponential Range Signal)
-Formula:
+买方成交
+𝑉
+𝑊
+𝐴
+𝑃
+−
+撮合价
+撮合价
+−
+卖方成交
+𝑉
+𝑊
+𝐴
+𝑃
+撮合价−卖方成交VWAP
+买方成交VWAP−撮合价
+​
+ 
+设计逻辑：
 
-(high - vwap)^{(vwap - low)}
-]
+集合竞价阶段（如 9:15–9:25）中，若买方成交均价高于撮合价，而卖方成交均价低于撮合价，说明买方更激进。该因子度量这种买卖力量不对称性。
 
-Construction Logic:
+使用方式：
 
-Originally tested as a multiplication of two positively correlated signals, this design was later improved using an exponentiation to amplify extreme co-movements. The transformation significantly enhanced predictive power.
+数据来源： 集合竞价撮合数据、挂单数据
 
-Usage & Backtest Logic:
+信号时点： 开盘前即可获得
 
-Data Used: Intraday minute-level OHLC and VWAP
+交易逻辑： 开盘买入，次日开盘卖出（open-to-open）
 
-Signal Time: Calculated at market close
+预测目标： 当日开盘至次日开盘的收益率
 
-Trade Logic: Buy at close, sell at next open
+实测夏普比率： 1.245
 
-Target: Predicts overnight return (close-to-open)
+⚠️ 注意： 即便因滑点将开盘买入改为“开盘第1分钟买入”，该因子仍保持统计显著性
 
-Sharpe Ratio: 2.798
+🧪 因子三：VWAP 扩张指数因子（VWAP Expansion via Exponentiation）
+计算公式：
 
-🧾 Performance Summary
-Factor Name	Signal Type	Trade Logic	Sharpe Ratio
-Intraday Spread Volatility Ratio	Minute (Intraday)	Close → Next Open	1.805
-Pre-market VWAP Imbalance Indicator	Auction (Pre-open)	Open → Next Open	1.245
-VWAP Expansion Factor	Minute (Intraday)	Close → Next Open	2.798
+(
+high
+−
+vwap
+)
+(
+vwap
+−
+low
+)
+(high−vwap) 
+(vwap−low)
+ 
+设计逻辑：
 
-🗂️ Repository Structure
-factor1.ipynb: Spread volatility ratio implementation
+最初将 (high - vwap) 与 (vwap - low) 相乘，但效果有限。改用幂函数形式后，能显著放大极端共振情形，提高因子灵敏度与非线性表达能力。该因子在盘中价格强势拉升中有良好表现。
 
-factor2.ipynb: VWAP imbalance indicator from call auction
+使用方式：
 
-factor3.ipynb: Exponential breakout-style signal using VWAP deviation
+数据来源： 当日分钟级 high、low、VWAP
 
-README.md: Description and performance summary of all factors
+信号时点： 每日收盘前生成
 
-📌 Notes
-All signals are constructed without lookahead bias
+交易逻辑： 收盘买入，次日开盘卖出
 
-Designed for short-horizon, daily rebalancing strategies
+预测目标： 隔夜收益率（close-to-open）
 
-Further improvements possible through signal combination, risk-adjusted scaling, and cross-validation
+实测夏普比率： 2.798
 
